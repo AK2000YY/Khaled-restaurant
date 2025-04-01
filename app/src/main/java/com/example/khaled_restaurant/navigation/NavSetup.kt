@@ -12,30 +12,35 @@ import com.example.khaled_restaurant.navigation.street.streetGraph
 
 @Composable
 fun NavSetup(
-    navHostController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController
 ) {
     NavHost(
         navController = navHostController,
         startDestination = AppGraph
     ) {
         appGraph(
+            modifier = modifier,
             navHostController = navHostController
         )
 
         streetGraph(
+            modifier = modifier,
             navHostController = navHostController
         )
 
         customerGraph(
+            modifier = modifier,
             navHostController = navHostController
         )
 
         foodGraph(
+            modifier = modifier,
             navHostController = navHostController
         )
 
         invoiceGraph(
+            modifier = modifier,
             navHostController = navHostController
         )
     }

@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -13,31 +12,26 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.khaled_restaurant.navigation.AppGraph
-import kotlinx.coroutines.delay
+import com.example.khaled_restaurant.presentation.landing.LandingScreen
 
 fun NavGraphBuilder.appGraph(
+    modifier: Modifier = Modifier,
     navHostController: NavHostController
 ) {
     navigation<AppGraph>(
         startDestination = LandingScreen
     ) {
         composable<LandingScreen> {
-            LaunchedEffect(key1 = Unit) {
-                delay(3000)
-                navHostController.navigate(MainScreen) {
-                    popUpTo(navHostController.graph.startDestinationId) {
-                        inclusive = true
+            LandingScreen(
+                modifier = modifier,
+                toMainScreen = {
+                    navHostController.navigate(MainScreen) {
+                        popUpTo(navHostController.graph.startDestinationId) {
+                            inclusive = true
+                        }
                     }
                 }
-            }
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.White),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "Khaled Restaurant", color = Color.Black)
-            }
+            )
         }
         composable<MainScreen> {
             Box(
