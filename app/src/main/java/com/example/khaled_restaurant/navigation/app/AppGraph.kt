@@ -1,18 +1,17 @@
 package com.example.khaled_restaurant.navigation.app
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.khaled_restaurant.navigation.AppGraph
+import com.example.khaled_restaurant.navigation.CustomersGraph
+import com.example.khaled_restaurant.navigation.FoodsGraph
+import com.example.khaled_restaurant.navigation.InvoicesGraph
+import com.example.khaled_restaurant.navigation.StreetsGraph
 import com.example.khaled_restaurant.presentation.landing.LandingScreen
+import com.example.khaled_restaurant.presentation.main.MainScreen
 
 fun NavGraphBuilder.appGraph(
     modifier: Modifier = Modifier,
@@ -34,14 +33,21 @@ fun NavGraphBuilder.appGraph(
             )
         }
         composable<MainScreen> {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.White),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "Welcome Bro", color = Color.Black)
-            }
+            MainScreen(
+                modifier = modifier,
+                toStreetSection = {
+                    navHostController.navigate(StreetsGraph)
+                },
+                toCustomerSection = {
+                    navHostController.navigate(CustomersGraph)
+                },
+                toFoodSection = {
+                    navHostController.navigate(FoodsGraph)
+                },
+                toInvoiceSection = {
+                    navHostController.navigate(InvoicesGraph)
+                }
+            )
         }
     }
 }

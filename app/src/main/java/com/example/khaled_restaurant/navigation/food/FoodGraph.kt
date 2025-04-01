@@ -5,13 +5,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.example.khaled_restaurant.navigation.StreetsGraph
+import com.example.khaled_restaurant.navigation.FoodsGraph
 
 fun NavGraphBuilder.foodGraph(
     modifier: Modifier = Modifier,
     navHostController: NavHostController
 ) {
-    navigation<StreetsGraph>(
+    navigation<FoodsGraph>(
         startDestination = FoodsView
     ) {
         composable<FoodsView> {
