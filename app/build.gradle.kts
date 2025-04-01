@@ -76,5 +76,7 @@ dependencies {
     kapt(libs.com.google.dagger.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.android.room.compiler)
 
 }
