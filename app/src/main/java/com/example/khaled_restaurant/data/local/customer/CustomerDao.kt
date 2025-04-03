@@ -9,11 +9,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CustomerDao {
     @Upsert
-    suspend fun saveOrUpdateCustomer()
+    suspend fun saveOrUpdateCustomer(customerEntity: CustomerEntity)
 
     @Delete
-    suspend fun deleteCustomer()
+    suspend fun deleteCustomer(customerEntity: CustomerEntity)
 
     @Query("select * from CustomerEntity")
-    suspend fun getAllCustomer(): Flow<List<CustomerEntity>>
+    fun getAllCustomer(): Flow<List<CustomerEntity>>
 }
