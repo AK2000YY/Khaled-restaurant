@@ -78,5 +78,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.room.runtime)
     kapt(libs.android.room.compiler)
-
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.org.apache.commonstext)
 }

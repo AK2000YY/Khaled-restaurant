@@ -13,7 +13,8 @@ hiltNaigation = "1.2.0"
 dagger = "2.51"
 kapt = "1.9.22"
 json = "1.6.3"
-room_version = "2.5.1"
+room_version = "2.6.1"
+common_texts = "1.9"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -39,6 +40,8 @@ androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navig
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "json" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room_version" }
 android-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room_version" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room_version" }
+org-apache-commonstext = { group = "org.apache.commons", name = "commons-text", version.ref = "common_texts" }
 
 
 [plugins]
