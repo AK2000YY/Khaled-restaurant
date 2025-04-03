@@ -20,13 +20,5 @@ fun NavGraphBuilder.streetGraph(
                 modifier = modifier
             )
         }
-
-        composable<StreetAdd> {
-
-        }
-
-        composable<StreetUpdate> {
-
-        }
     }
 }
