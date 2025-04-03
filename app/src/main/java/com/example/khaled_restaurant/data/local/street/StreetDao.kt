@@ -10,12 +10,12 @@ import kotlinx.coroutines.flow.Flow
 interface StreetDao {
 
     @Upsert
-    suspend fun saveOrUpdateStreet()
+    suspend fun saveOrUpdateStreet(streetEntity: StreetEntity)
 
     @Delete
-    suspend fun deleteStreet()
+    suspend fun deleteStreet(streetEntity: StreetEntity)
 
     @Query("select * from StreetEntity")
-    suspend fun getAllStreet(): Flow<List<StreetEntity>>
+    fun getAllStreet(): Flow<List<StreetEntity>>
 
 }

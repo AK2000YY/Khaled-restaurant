@@ -2,11 +2,17 @@ package com.example.khaled_restaurant.data.local.street
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.khaled_restaurant.domain.model.Street
 
 
 @Entity
 data class StreetEntity (
     @PrimaryKey(autoGenerate = true)
-    val id: Int?,
-    val name: String?
+    var id: Int?,
+    var name: String?
+)
+
+fun StreetEntity.toModel() = Street(
+    id,
+    name
 )
