@@ -1,7 +1,6 @@
 package com.example.khaled_restaurant.presentation.street
 
 import com.example.khaled_restaurant.domain.model.Street
-import com.example.khaled_restaurant.navigation.street.DialogType
 
 sealed class StreetEvent {
     data class SearchName(val name: String) : StreetEvent()
@@ -9,4 +8,5 @@ sealed class StreetEvent {
     data class ShowDialog(val show: Boolean, val type: DialogType = DialogType.DELETE) : StreetEvent()
     data class AddStreet(val street: Street) : StreetEvent()
     data class UpdateStreet(val street: Street) : StreetEvent()
+    data class ToCustomers(val streetId: Int): StreetEvent()
 }

@@ -1,6 +1,7 @@
 package com.example.khaled_restaurant.presentation.street
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +28,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.khaled_restaurant.domain.model.Street
-import com.example.khaled_restaurant.navigation.street.DialogType
 import com.example.khaled_restaurant.presentation.street.components.AddStreetDialog
 import com.example.khaled_restaurant.presentation.street.components.CustomTextField
 import com.example.khaled_restaurant.presentation.street.components.DeleteStreetDialog
@@ -36,7 +37,8 @@ import com.example.khaled_restaurant.presentation.street.components.UpdateStreet
 @Composable
 fun StreetScreen(
     modifier: Modifier = Modifier,
-    viewModel: StreetViewModel = hiltViewModel()
+    viewModel: StreetViewModel = hiltViewModel(),
+    toCustomers: (Int) -> Unit
 ) {
 
     val state by viewModel.state.collectAsState()
@@ -44,22 +46,29 @@ fun StreetScreen(
         mutableStateOf(Street(null, null))
     }
 
-    if(state.showDialog) {
-        when(state.dialogType) {
+    if (state.toCustomers != null) {
+        LaunchedEffect(true) {
+            toCustomers(state.toCustomers!!)
+        }
+    }
+
+    if (state.showDialog) {
+        when (state.dialogType) {
             DialogType.ADD ->
                 AddStreetDialog(
                     onEvent = {
                         viewModel.onEvent(it)
                     }
                 )
+
             DialogType.DELETE ->
                 DeleteStreetDialog(
                     onEvent = {
                         viewModel.onEvent(it)
-                    }
-                    ,
+                    },
                     street = street
                 )
+
             DialogType.UPDATE ->
                 UpdateStreetDialog(
                     onEvent = {
@@ -74,11 +83,11 @@ fun StreetScreen(
         modifier = modifier
             .background(Color.Black)
     ) {
-        Column (
+        Column(
             modifier = Modifier
                 .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween
-        ){
+        ) {
             CustomTextField(
                 unFocusColor = Color.LightGray,
                 focusColor = Color.White,
@@ -94,6 +103,10 @@ fun StreetScreen(
             ) {
                 items(state.streets, key = { it.id!! }) {
                     StreetCard(
+                        modifier = Modifier
+                            .clickable {
+                                viewModel.onEvent(StreetEvent.ToCustomers(it.id!!))
+                            },
                         streetName = it.name.toString(),
                         delete = {
                             street = it

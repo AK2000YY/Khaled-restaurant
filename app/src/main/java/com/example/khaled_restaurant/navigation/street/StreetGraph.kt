@@ -5,7 +5,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import androidx.navigation.toRoute
 import com.example.khaled_restaurant.navigation.StreetsGraph
+import com.example.khaled_restaurant.presentation.customer.CustomerScreen
 import com.example.khaled_restaurant.presentation.street.StreetScreen
 
 fun NavGraphBuilder.streetGraph(
@@ -17,8 +19,16 @@ fun NavGraphBuilder.streetGraph(
     ) {
         composable<StreetsView> {
             StreetScreen(
-                modifier = modifier
+                modifier = modifier,
+                toCustomers = { streetId ->
+                    navHostController.navigate(CustomersView(streetId = streetId))
+                }
             )
+        }
+        composable<CustomersView> {
+                CustomerScreen(
+                    modifier = modifier
+                )
         }
     }
 }

@@ -3,7 +3,6 @@ package com.example.khaled_restaurant.presentation.street
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.khaled_restaurant.domain.repository.StreetRepository
-import com.example.khaled_restaurant.navigation.street.DialogType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -69,6 +68,14 @@ class StreetViewModel @Inject constructor(
                 viewModelScope.launch {
                     streetRepository.insertOrUpdateStreet(event.street)
                     showOrHideDialog(false)
+                }
+            }
+
+            is StreetEvent.ToCustomers -> {
+                _state.update {
+                    it.copy(
+                        toCustomers = event.streetId
+                    )
                 }
             }
         }
