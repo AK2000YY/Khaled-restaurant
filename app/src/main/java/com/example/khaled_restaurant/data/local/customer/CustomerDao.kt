@@ -16,4 +16,7 @@ interface CustomerDao {
 
     @Query("select * from CustomerEntity")
     fun getAllCustomer(): Flow<List<CustomerEntity>>
+
+    @Query("select * from CustomerEntity where streetId == :streetId")
+    fun getAllCustomerByStreetId(streetId: Int): Flow<List<CustomerEntity>>
 }
