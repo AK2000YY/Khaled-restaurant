@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface StreetRepository {
     suspend fun getStreet(): Flow<List<Street>>
-    suspend fun getStreetBySearch(name: String): Flow<List<Street>>
     suspend fun insertOrUpdateStreet(street: Street)
     suspend fun deleteStreet(street: Street)
 }
