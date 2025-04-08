@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.khaled_restaurant.navigation.app.appGraph
+import com.example.khaled_restaurant.navigation.customer.customerGraph
 import com.example.khaled_restaurant.navigation.food.foodGraph
 import com.example.khaled_restaurant.navigation.invoice.invoiceGraph
 import com.example.khaled_restaurant.navigation.street.streetGraph
@@ -24,6 +25,11 @@ fun NavSetup(
         )
 
         streetGraph(
+            modifier = modifier,
+            navHostController = navHostController
+        )
+
+        customerGraph(
             modifier = modifier,
             navHostController = navHostController
         )

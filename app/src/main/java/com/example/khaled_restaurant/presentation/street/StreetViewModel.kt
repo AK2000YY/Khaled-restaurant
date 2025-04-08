@@ -77,14 +77,6 @@ class StreetViewModel @Inject constructor(
                     showOrHideDialog(false)
                 }
             }
-
-            is StreetEvent.ToCustomers -> {
-                _state.update {
-                    it.copy(
-                        toCustomers = event.streetId
-                    )
-                }
-            }
         }
 
     }

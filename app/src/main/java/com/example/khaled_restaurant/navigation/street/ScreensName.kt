@@ -4,8 +4,3 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data object StreetsView
-
-@Serializable
-data class CustomersView(
-    val streetId: Int? = null
-)

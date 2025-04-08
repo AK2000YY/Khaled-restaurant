@@ -6,6 +6,5 @@ data class UiState(
     val streets: List<Street> = emptyList(),
     val searchName: String = "",
     val showDialog: Boolean = false,
-    val dialogType: DialogType = DialogType.DELETE,
-    val toCustomers: Int? = null
+    val dialogType: DialogType = DialogType.DELETE
 )

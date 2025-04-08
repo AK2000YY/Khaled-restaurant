@@ -1,7 +1,6 @@
 package com.example.khaled_restaurant.presentation.street
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,19 +35,12 @@ import com.example.khaled_restaurant.presentation.street.components.UpdateStreet
 @Composable
 fun StreetScreen(
     modifier: Modifier = Modifier,
-    viewModel: StreetViewModel = hiltViewModel(),
-    toCustomers: (Int) -> Unit
+    viewModel: StreetViewModel = hiltViewModel()
 ) {
 
     val state by viewModel.state.collectAsState()
     var street by remember {
         mutableStateOf(Street(null, null))
-    }
-
-    if (state.toCustomers != null) {
-        LaunchedEffect(true) {
-            toCustomers(state.toCustomers!!)
-        }
     }
 
     if (state.showDialog) {
@@ -103,10 +94,6 @@ fun StreetScreen(
             ) {
                 items(state.streets, key = { it.id!! }) {
                     StreetCard(
-                        modifier = Modifier
-                            .clickable {
-                                viewModel.onEvent(StreetEvent.ToCustomers(it.id!!))
-                            },
                         streetName = it.name.toString(),
                         delete = {
                             street = it
