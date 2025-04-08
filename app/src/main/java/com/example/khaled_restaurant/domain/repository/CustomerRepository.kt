@@ -11,8 +11,4 @@ interface CustomerRepository {
 
     suspend fun deleteCustomer(customer: Customer)
 
-    suspend fun getCustomerByStreetId(streetId: Int): Flow<List<Customer>>
-
-    suspend fun filterCustomerByName(name: String): Flow<List<Customer>>
-
 }
