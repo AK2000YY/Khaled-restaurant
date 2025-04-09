@@ -53,6 +53,7 @@ fun AddCustomerDialog(
                     color = Color.Black,
                     unFocusColor = Color.LightGray,
                     focusColor = Color.Black,
+                    placeholder = "customer name",
                     input = name,
                     changeInput = { name = it }
                 )
@@ -60,6 +61,7 @@ fun AddCustomerDialog(
                     color = Color.Black,
                     unFocusColor = Color.LightGray,
                     focusColor = Color.Black,
+                    placeholder = "customer phone",
                     input = phone,
                     changeInput = { phone = it }
                 )
@@ -73,6 +75,7 @@ fun AddCustomerDialog(
                         color = Color.Black,
                         unFocusColor = Color.LightGray,
                         focusColor = Color.Black,
+                        placeholder = "customer street",
                         input = streetSearch,
                         changeInput = {
                             streetSearch = it

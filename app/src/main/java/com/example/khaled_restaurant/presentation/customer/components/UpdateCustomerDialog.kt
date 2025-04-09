@@ -54,6 +54,7 @@ fun UpdateCustomerDialog(
                     color = Color.Black,
                     unFocusColor = Color.LightGray,
                     focusColor = Color.Black,
+                    placeholder = "customer name",
                     input = name,
                     changeInput = { name = it }
                 )
@@ -61,6 +62,7 @@ fun UpdateCustomerDialog(
                     color = Color.Black,
                     unFocusColor = Color.LightGray,
                     focusColor = Color.Black,
+                    placeholder = "customer phone",
                     input = phone,
                     changeInput = { phone = it }
                 )
@@ -75,6 +77,7 @@ fun UpdateCustomerDialog(
                         unFocusColor = Color.LightGray,
                         focusColor = Color.Black,
                         input = streetSearch,
+                        placeholder = "customer street",
                         changeInput = {
                             streetSearch = it
                             onEvent(CustomerEvent.ChangeSelectedStreetName(streetSearch))

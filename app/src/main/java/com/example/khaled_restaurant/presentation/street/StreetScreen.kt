@@ -82,6 +82,7 @@ fun StreetScreen(
             CustomTextField(
                 unFocusColor = Color.LightGray,
                 focusColor = Color.White,
+                placeholder = "Search street",
                 input = state.searchName,
                 changeInput = {
                     viewModel.onEvent(StreetEvent.SearchName(it))

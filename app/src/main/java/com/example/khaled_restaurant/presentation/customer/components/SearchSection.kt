@@ -19,11 +19,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.khaled_restaurant.presentation.customer.CustomerEvent
 import com.example.khaled_restaurant.presentation.customer.DialogType
+import com.example.khaled_restaurant.presentation.customer.FilterType
 import com.example.khaled_restaurant.presentation.street.components.CustomTextField
 
 @Composable
 fun SearchSection(
     modifier: Modifier = Modifier,
+    filterType: FilterType,
     onEvent: (CustomerEvent) -> Unit
 ) {
     var search by rememberSaveable {
@@ -40,6 +42,11 @@ fun SearchSection(
                 .weight(8f),
             unFocusColor = Color.LightGray,
             focusColor = Color.White,
+            placeholder = when(filterType) {
+                FilterType.NameType -> "search by name"
+                FilterType.PhoneType -> "search by phone"
+                FilterType.StreetNameType -> "search by street"
+            },
             input = search,
             changeInput = {
                 search = it

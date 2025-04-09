@@ -19,6 +19,7 @@ fun CustomTextField(
     unFocusColor: Color,
     color: Color = Color.White,
     focusColor: Color,
+    placeholder: String = "",
     input: String,
     changeInput: (String) -> Unit
 ) {
@@ -27,7 +28,7 @@ fun CustomTextField(
             .padding(8.dp)
             .fillMaxWidth(),
         placeholder = {
-            Text(text = "Search Streets", color = Color.Gray, fontSize = 12.sp)
+            Text(text = placeholder, color = Color.Gray, fontSize = 12.sp)
         },
         textStyle = TextStyle(color = color, fontSize = 12.sp),
         value = input,

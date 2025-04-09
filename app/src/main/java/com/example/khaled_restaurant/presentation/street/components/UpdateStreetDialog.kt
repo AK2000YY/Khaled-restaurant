@@ -21,7 +21,7 @@ fun UpdateStreetDialog(
     street: Street
 ) {
     var name by remember {
-        mutableStateOf("")
+        mutableStateOf(street.name.toString())
     }
     AlertDialog(
         modifier = modifier,
@@ -36,6 +36,7 @@ fun UpdateStreetDialog(
                     color = Color.Black,
                     unFocusColor = Color.LightGray,
                     focusColor = Color.Black,
+                    placeholder = "street name",
                     input = name,
                     changeInput = {
                         name = it

@@ -35,6 +35,7 @@ fun AddStreetDialog(
                     color = Color.Black,
                     unFocusColor = Color.LightGray,
                     focusColor = Color.Black,
+                    placeholder = "street name",
                     input = name,
                     changeInput = {
                         name = it

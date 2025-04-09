@@ -91,6 +91,7 @@ fun CustomerScreen(
             SearchSection(
                 modifier = Modifier
                     .height(70.dp),
+                filterType = state.searchType,
                 onEvent = {
                     viewModel.onEvent(it)
                 }
