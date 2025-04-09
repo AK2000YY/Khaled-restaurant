@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -30,6 +31,7 @@ import com.example.khaled_restaurant.presentation.customer.components.AddCustome
 import com.example.khaled_restaurant.presentation.customer.components.CustomerCard
 import com.example.khaled_restaurant.presentation.customer.components.DeleteCustomerDialog
 import com.example.khaled_restaurant.presentation.customer.components.FilterCustomerDialog
+import com.example.khaled_restaurant.presentation.customer.components.SearchSection
 import com.example.khaled_restaurant.presentation.customer.components.UpdateCustomerDialog
 
 @Composable
@@ -68,7 +70,11 @@ fun CustomerScreen(
                     }
                 )
             DialogType.Filter ->
-                FilterCustomerDialog()
+                FilterCustomerDialog(
+                    onEvent = {
+                        viewModel.onEvent(it)
+                    }
+                )
         }
     }
 
@@ -82,7 +88,17 @@ fun CustomerScreen(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            LazyColumn {
+            SearchSection(
+                modifier = Modifier
+                    .height(70.dp),
+                onEvent = {
+                    viewModel.onEvent(it)
+                }
+            )
+            LazyColumn(
+                modifier = Modifier
+                    .weight(1f)
+            ) {
                 items(state.customers, key = {it.id!!}) {
                     CustomerCard(
                         customer = it,
