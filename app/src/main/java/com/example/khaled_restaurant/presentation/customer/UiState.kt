@@ -8,6 +8,7 @@ data class UiState(
     val streets: Map<Int, String> = emptyMap(),
     val selectedStreets: List<Street> = emptyList(),
     val showDialog: Boolean = false,
-    val searchValue: FilterType = FilterType.NameType(""),
+    val searchType: FilterType = FilterType.NameType,
+    val searchValue: String = "",
     val dialogType: DialogType = DialogType.Delete
 )
