@@ -33,9 +33,9 @@ class CustomerViewModel @Inject constructor(
     private val _selectedStreets = _filterSelectedStreet.flatMapLatest {
         filterSelectedStreet(it)
     }
-    private val _filter = MutableStateFlow<FilterType>(FilterType.NameType(""))
+    private val _filter = MutableStateFlow(Pair(FilterType.NameType, ""))
     private val _customers = _filter.flatMapLatest { filter ->
-        filter(filter)
+        filter(filter.first, filter.second)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     private val _state = MutableStateFlow(UiState())
     private val _streetsMap = MutableStateFlow<Map<Int, String>>(emptyMap())
@@ -48,7 +48,7 @@ class CustomerViewModel @Inject constructor(
     ) { filter, customers, state, streetsMap, selectedStreets ->
         state.copy(
             customers = customers,
-            searchValue = filter,
+            searchType = filter.first,
             streets = streetsMap,
             selectedStreets = selectedStreets
         )
@@ -82,8 +82,21 @@ class CustomerViewModel @Inject constructor(
                 }
             }
 
-            is CustomerEvent.FilterCustomer -> {
-                _filter.value = event.type
+            is CustomerEvent.FilterCustomerType -> {
+                _filter.update {
+                    it.copy(
+                        first = event.type
+                    )
+                }
+                hideDialog()
+            }
+
+            is CustomerEvent.FilterCustomerValue -> {
+                _filter.update {
+                    it.copy(
+                        second = event.search
+                    )
+                }
             }
 
             is CustomerEvent.HideDialog -> {
@@ -128,16 +141,16 @@ class CustomerViewModel @Inject constructor(
             }
         }
 
-    private suspend fun filter(filter: FilterType): Flow<List<Customer>> {
+    private suspend fun filter(filter: FilterType, searchValue: String): Flow<List<Customer>> {
         return when (filter) {
-            is FilterType.NameType ->
+            FilterType.NameType ->
                 customerRepository.getAllCustomer().map { customers ->
                     customers.map { customer ->
                         val similarity = levenshtein.apply(
-                            filter.name.lowercase(),
+                            searchValue.lowercase(),
                             customer.name!!.substring(
                                 0,
-                                min(filter.name.length, customer.name.length)
+                                min(searchValue.length, customer.name.length)
                             ).lowercase()
                         )
                         Pair(customer, similarity)
@@ -148,14 +161,14 @@ class CustomerViewModel @Inject constructor(
                     }
                 }
 
-            is FilterType.PhoneType ->
+            FilterType.PhoneType ->
                 customerRepository.getAllCustomer().map { customers ->
                     customers.map { customer ->
                         val similarity = levenshtein.apply(
-                            filter.phone.lowercase(),
+                            searchValue.lowercase(),
                             customer.phone!!.substring(
                                 0,
-                                min(filter.phone.length, customer.phone.length)
+                                min(searchValue.length, customer.phone.length)
                             ).lowercase()
                         )
                         Pair(customer, similarity)
@@ -166,14 +179,14 @@ class CustomerViewModel @Inject constructor(
                     }
                 }
 
-            is FilterType.StreetNameType -> {
+            FilterType.StreetNameType -> {
                 val streetsId = streetRepository.getStreet().map { streets ->
                     streets.map { street ->
                         val similarity = levenshtein.apply(
-                            filter.streetName.lowercase(),
+                            searchValue.lowercase(),
                             street.name!!.substring(
                                 0,
-                                min(filter.streetName.length, street.name.length)
+                                min(searchValue.length, street.name.length)
                             ).lowercase()
                         )
                         Pair(street, similarity)
