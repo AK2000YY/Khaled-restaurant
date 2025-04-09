@@ -59,7 +59,14 @@ fun CustomerScreen(
                     }
                 )
             DialogType.Update ->
-                UpdateCustomerDialog()
+                UpdateCustomerDialog(
+                    streetName = state.streets[customer.streetId] ?: "UNKNOWN",
+                    customer = customer,
+                    streets = state.selectedStreets,
+                    onEvent = {
+                        viewModel.onEvent(it)
+                    }
+                )
             DialogType.Filter ->
                 FilterCustomerDialog()
         }
