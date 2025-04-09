@@ -16,12 +16,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.khaled_restaurant.domain.model.Customer
 import com.example.khaled_restaurant.presentation.customer.components.AddCustomerDialog
 import com.example.khaled_restaurant.presentation.customer.components.CustomerCard
 import com.example.khaled_restaurant.presentation.customer.components.DeleteCustomerDialog
@@ -34,11 +38,19 @@ fun CustomerScreen(
     viewModel: CustomerViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    var customer by remember {
+        mutableStateOf(Customer(null,null,null,null))
+    }
 
     if(state.showDialog) {
         when(state.dialogType) {
             DialogType.Delete ->
-                DeleteCustomerDialog()
+                DeleteCustomerDialog(
+                    customer = customer,
+                    onEvent = {
+                        viewModel.onEvent(it)
+                    }
+                )
             DialogType.Add ->
                 AddCustomerDialog(
                     streets = state.selectedStreets,
@@ -69,6 +81,7 @@ fun CustomerScreen(
                         customer = it,
                         streetName = state.streets[it.streetId] ?: "UNKNOWN",
                         onEvent = { event ->
+                            customer = it
                             viewModel.onEvent(event)
                         }
                     )

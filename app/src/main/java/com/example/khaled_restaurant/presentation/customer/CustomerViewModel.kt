@@ -26,7 +26,7 @@ import kotlin.math.min
 class CustomerViewModel @Inject constructor(
     private val customerRepository: CustomerRepository,
     private val streetRepository: StreetRepository
-) : ViewModel(){
+) : ViewModel() {
 
     private val levenshtein = LevenshteinDistance()
     private val _filterSelectedStreet = MutableStateFlow("")
@@ -39,7 +39,13 @@ class CustomerViewModel @Inject constructor(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), emptyList())
     private val _state = MutableStateFlow(UiState())
     private val _streetsMap = MutableStateFlow<Map<Int, String>>(emptyMap())
-    val state = combine(_filter, _customers, _state, _streetsMap, _selectedStreets) { filter, customers, state, streetsMap, selectedStreets ->
+    val state = combine(
+        _filter,
+        _customers,
+        _state,
+        _streetsMap,
+        _selectedStreets
+    ) { filter, customers, state, streetsMap, selectedStreets ->
         state.copy(
             customers = customers,
             searchValue = filter,
@@ -57,35 +63,33 @@ class CustomerViewModel @Inject constructor(
     }
 
     fun onEvent(event: CustomerEvent) {
-        when(event) {
+        when (event) {
             is CustomerEvent.AddOrUpdateCustomer -> {
                 viewModelScope.launch {
-                    if(event.customer.name!!.isEmpty() || event.customer.phone!!.isEmpty() || event.customer.streetId == -1)
+                    if (event.customer.name!!.isEmpty() || event.customer.phone!!.isEmpty() || event.customer.streetId == -1)
                         return@launch
-                    else
+                    else {
                         customerRepository.updateOrAddCustomer(event.customer)
-                    _state.update {
-                        it.copy(
-                            showDialog = false
-                        )
+                        hideDialog()
                     }
                 }
             }
+
             is CustomerEvent.DeleteCustomer -> {
                 viewModelScope.launch {
                     customerRepository.deleteCustomer(event.customer)
+                    hideDialog()
                 }
             }
+
             is CustomerEvent.FilterCustomer -> {
                 _filter.value = event.type
             }
+
             is CustomerEvent.HideDialog -> {
-                _state.update {
-                    it.copy(
-                        showDialog = false
-                    )
-                }
+                hideDialog()
             }
+
             is CustomerEvent.ShowDialog -> {
                 _state.update {
                     it.copy(
@@ -94,16 +98,28 @@ class CustomerViewModel @Inject constructor(
                     )
                 }
             }
+
             is CustomerEvent.ChangeSelectedStreetName -> {
                 _filterSelectedStreet.value = event.name
             }
         }
     }
 
+    private fun hideDialog() {
+        _state.update {
+            it.copy(
+                showDialog = false
+            )
+        }
+    }
+
     private suspend fun filterSelectedStreet(name: String): Flow<List<Street>> =
         streetRepository.getStreet().map { streets ->
             streets.map { street ->
-                val similarity = levenshtein.apply(name.lowercase(), street.name!!.substring(0, min(name.length, street.name.length)).lowercase())
+                val similarity = levenshtein.apply(
+                    name.lowercase(),
+                    street.name!!.substring(0, min(name.length, street.name.length)).lowercase()
+                )
                 Pair(street, similarity)
             }.sortedBy {
                 it.second
@@ -113,11 +129,17 @@ class CustomerViewModel @Inject constructor(
         }
 
     private suspend fun filter(filter: FilterType): Flow<List<Customer>> {
-        return when(filter) {
+        return when (filter) {
             is FilterType.NameType ->
                 customerRepository.getAllCustomer().map { customers ->
                     customers.map { customer ->
-                        val similarity = levenshtein.apply(filter.name.lowercase(), customer.name!!.substring(0, min(filter.name.length, customer.name.length)).lowercase())
+                        val similarity = levenshtein.apply(
+                            filter.name.lowercase(),
+                            customer.name!!.substring(
+                                0,
+                                min(filter.name.length, customer.name.length)
+                            ).lowercase()
+                        )
                         Pair(customer, similarity)
                     }.sortedBy {
                         it.second
@@ -125,10 +147,17 @@ class CustomerViewModel @Inject constructor(
                         it.first
                     }
                 }
+
             is FilterType.PhoneType ->
                 customerRepository.getAllCustomer().map { customers ->
                     customers.map { customer ->
-                        val similarity = levenshtein.apply(filter.phone.lowercase(), customer.phone!!.substring(0, min(filter.phone.length, customer.phone.length)).lowercase())
+                        val similarity = levenshtein.apply(
+                            filter.phone.lowercase(),
+                            customer.phone!!.substring(
+                                0,
+                                min(filter.phone.length, customer.phone.length)
+                            ).lowercase()
+                        )
                         Pair(customer, similarity)
                     }.sortedBy {
                         it.second
@@ -136,10 +165,17 @@ class CustomerViewModel @Inject constructor(
                         it.first
                     }
                 }
+
             is FilterType.StreetNameType -> {
                 val streetsId = streetRepository.getStreet().map { streets ->
                     streets.map { street ->
-                        val similarity = levenshtein.apply(filter.streetName.lowercase(), street.name!!.substring(0, min(filter.streetName.length, street.name.length)).lowercase())
+                        val similarity = levenshtein.apply(
+                            filter.streetName.lowercase(),
+                            street.name!!.substring(
+                                0,
+                                min(filter.streetName.length, street.name.length)
+                            ).lowercase()
+                        )
                         Pair(street, similarity)
                     }.sortedBy {
                         it.second
